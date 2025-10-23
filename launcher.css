@@ -1,0 +1,3 @@
+grid-template-columns: repeat(auto-fit, minmax(80px,1fr));
+max-width:360px; /* untuk HP, tapi di PC bisa melebar */
+width:95%;

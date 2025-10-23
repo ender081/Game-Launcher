@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Game</title>
+<style>
+body { margin:0; font-family:'Segoe UI',sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; background:#0f172a; color:white; }
+.container { background:#1e293b; padding:20px; border-radius:16px; max-width:500px; width:90%; text-align:center; }
+button { padding:10px 16px; margin:5px; border:none; border-radius:8px; background:#06b6d4; color:#0f172a; font-weight:bold; cursor:pointer; }
+#restart { display:none; margin-top:10px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2 id="question">Soal akan muncul di sini</h2>
+  <div id="answers"></div>
+  <div id="score" style="margin-top:15px; font-weight:bold;"></div>
+  <button id="restart" onclick="restartQuiz()">Main Lagi</button>
+  <button id="back" onclick="window.location='index.html'" style="margin-top:15px; padding:8px 12px; border:none; border-radius:8px; background:#06b6d4; color:#0f172a; font-weight:bold; cursor:pointer;">Back to Game Launcher</button>
+</div>
+
+<script>
+const quizData = [
+  {q:"Ibukota Indonesia?", a:["Jakarta","Bandung","Surabaya","Medan"], correct:0},
+  {q:"2 + 2 = ?", a:["3","4","5","6"], correct:1},
+  {q:"Bahasa pemrograman untuk web?", a:["HTML","Python","C++","Java"], correct:0},
+  {q:"Planet terdekat ke Matahari?", a:["Bumi","Mars","Merkurius","Venus"], correct:2},
+  {q:"Air mendidih pada suhu?", a:["90°C","100°C","80°C","120°C"], correct:1},
+  {q:"Siapa penemu lampu pijar?", a:["Tesla","Edison","Newton","Galileo"], correct:1},
+  {q:"Gunung tertinggi di dunia?", a:["Everest","K2","Kilimanjaro","Annapurna"], correct:0},
+  {q:"Bahasa resmi Brasil?", a:["Spanyol","Portugis","Prancis","Italia"], correct:1},
+  {q:"Hewan tercepat di darat?", a:["Cheetah","Kuda","Kelinci","Singa"], correct:0},
+  {q:"Siapa presiden pertama Indonesia?", a:["Sukarno","Suharto","Habibie","Yudhoyono"], correct:0},
+  {q:"Bentuk bumi?", a:["Bulat","Persegi","Segitiga","Oval"], correct:0},
+  {q:"Huruf pertama alfabet?", a:["A","B","C","D"], correct:0},
+  {q:"2 x 6 = ?", a:["10","12","14","16"], correct:1},
+  {q:"Ibu kota Jepang?", a:["Osaka","Kyoto","Tokyo","Hiroshima"], correct:2},
+  {q:"Siapa penulis 'Harry Potter'?", a:["Tolkien","Rowling","Lewis","Martin"], correct:1},
+  {q:"Jumlah benua?", a:["5","6","7","8"], correct:2},
+  {q:"Planet terbesar?", a:["Bumi","Mars","Jupiter","Venus"], correct:2},
+  {q:"Hewan berkantung?", a:["Koala","Gajah","Kuda","Singa"], correct:0},
+  {q:"Warna bendera Indonesia?", a:["Merah Putih","Merah Biru","Hijau Putih","Hitam Kuning"], correct:0},
+  {q:"Bulan ke-4 dalam kalender?", a:["Maret","April","Mei","Juni"], correct:1}
+];
+
+let current = 0;
+let score = 0;
+const pointsPerQuestion = 5; // setiap soal 5 poin
+
+function showQuestion(){
+  const q = quizData[current];
+  document.getElementById('question').textContent = q.q;
+  const ansDiv = document.getElementById('answers');
+  ansDiv.innerHTML = '';
+  q.a.forEach((ans,i)=>{
+    const btn = document.createElement('button');
+    btn.textContent = ans;
+    btn.onclick = () => checkAnswer(i);
+    ansDiv.appendChild(btn);
+  });
+}
+
+function checkAnswer(selected){
+  if(selected === quizData[current].correct){
+    score += pointsPerQuestion;
+  }
+  current++;
+  if(current < quizData.length){
+    showQuestion();
+  } else {
+    document.getElementById('question').textContent = `Selesai! Skormu: ${score}/${quizData.length*pointsPerQuestion}`;
+    document.getElementById('answers').innerHTML = '';
+    document.getElementById('restart').style.display = 'inline-block';
+  }
+}
+
+function restartQuiz(){
+  current = 0;
+  score = 0;
+  document.getElementById('restart').style.display='none';
+  showQuestion();
+}
+
+showQuestion();
+</script>
+</body>
+</html>

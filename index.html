@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Launcher HP</title>
+
+<link rel="stylesheet" href="launcher.css">
+
+<style>
+/* Background gradient + dekorasi */
+body {
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background: linear-gradient(135deg,#0f172a,#1e293b);
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  min-height:100vh;
+  position:relative;
+  overflow:hidden;
+  padding-top:60px; /* ruang untuk judul */
+}
+
+/* efek bintang / dekorasi */
+body::before {
+  content:"";
+  position:absolute;
+  width:200%;
+  height:200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 1%, transparent 1%);
+  background-size:50px 50px;
+  animation: moveBG 20s linear infinite;
+  z-index:0;
+}
+@keyframes moveBG {
+  from{ transform:translate(0,0);}
+  to{ transform:translate(-50px,-50px);}
+}
+
+/* judul di tengah atas */
+#title {
+  position:fixed;
+  top:10px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:22px;
+  font-weight:bold;
+  color:#06b6d4;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+  z-index:999;
+}
+
+/* jam digital */
+#clock {
+  position:fixed;
+  top:10px;
+  right:10px;
+  font-family:'Courier New', monospace;
+  font-size:14px;
+  font-weight:bold;
+  color:#06b6d4;
+  z-index:999;
+}
+
+.desktop {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px,1fr));
+  gap:10px;
+  width:95%;
+  max-width:360px;
+  z-index:1;
+  margin-top:50px; 
+}
+
+/* ikon */
+.icon {
+  background: rgba(30,41,59,0.9);
+  border-radius:10px;
+  text-align:center;
+  padding:12px 6px;
+  cursor:pointer;
+  transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+.icon:hover {
+  transform: scale(1.05);
+  background: rgba(51,65,85,0.9);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+}
+.icon img {
+  width:40px;
+  height:40px;
+  margin-bottom:6px;
+}
+.icon span {
+  display:block;
+  font-weight:bold;
+  font-size:12px;
+}
+</style>
+</head>
+<body>
+
+<div id="title">🎮 Game Launcher 🎮</div>
+<div id="clock"></div>
+
+<div class="desktop">
+  <div class="icon" onclick="window.location='tebak-angka.html'">
+    <img src="https://img.icons8.com/ios-filled/100/ffffff/1-circle.png" alt="Tebak Angka">
+    <span>Tebak Angka</span>
+  </div>
+  <div class="icon" onclick="window.location='snake.html'">
+    <img src="https://img.icons8.com/ios-filled/100/ffffff/snake.png" alt="Snake">
+    <span>Snake</span>
+  </div>
+  <div class="icon" onclick="window.location='quiz.html'">
+    <img src="https://img.icons8.com/ios-filled/100/ffffff/quiz.png" alt="Quiz">
+    <span>Quiz</span>
+  </div>
+  <div class="desktop">
+  <div class="icon" onclick="openGame('tebak-angka.html','Tebak Angka')">
+    <img src="https://img.icons8.com/ios-filled/100/ffffff/1-circle.png" alt="Tebak Angka">
+    <span>Tebak Angka</span>
+    <div id="score-tebak" style="font-size:10px; color:#06b6d4; margin-top:4px;"></div>
+  </div>
+  <div class="icon" onclick="openGame('snake.html','Snake')">
+    <img src="https://img.icons8.com/ios-filled/100/ffffff/snake.png" alt="Snake">
+    <span>Snake</span>
+    <div id="score-snake" style="font-size:10px; color:#06b6d4; margin-top:4px;"></div>
+  </div>
+  <div class="icon" onclick="openGame('quiz.html','Quiz')">
+    <img src="https://img.icons8.com/ios-filled/100/ffffff/quiz.png" alt="Quiz">
+    <span>Quiz</span>
+    <div id="score-quiz" style="font-size:10px; color:#06b6d4; margin-top:4px;"></div>
+  </div>
+</div>
+
+<script>
+  // Jam digital 12 jam dengan AM/PM
+function updateClock(){
+  const now = new Date();
+  let h = now.getHours();
+  const m = now.getMinutes().toString().padStart(2,'0');
+  const s = now.getSeconds().toString().padStart(2,'0');
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12;
+  h = h ? h : 12;
+  document.getElementById('clock').textContent = `${h}:${m}:${s} ${ampm}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+// Load skor tertinggi dari localStorage
+function loadHighScores(){
+  const scores = {
+    tebak: localStorage.getItem('score-tebak') || 0,
+    snake: localStorage.getItem('score-snake') || 0,
+    quiz: localStorage.getItem('score-quiz') || 0
+  };
+  document.getElementById('score-tebak').textContent = "Top: " + scores.tebak;
+  document.getElementById('score-snake').textContent = "Top: " + scores.snake;
+  document.getElementById('score-quiz').textContent = "Top: " + scores.quiz;
+}
+
+// Fungsi membuka game dan bisa dikembangkan untuk update skor
+function openGame(url, game){
+  window.location = url;
+}
+
+loadHighScores();
+</script>
+
+</body>
+</html>

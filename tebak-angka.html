@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tebak Angka</title>
+<style>
+body { font-family:'Segoe UI',sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; background:#0f172a; color:white; }
+.container { background:#1e293b; padding:20px; border-radius:16px; text-align:center; max-width:400px; width:90%; }
+input { padding:10px; font-size:16px; width:60%; border-radius:8px; border:none; outline:none; }
+button { padding:10px 16px; font-size:16px; margin-left:10px; border:none; border-radius:8px; background:#06b6d4; color:#0f172a; cursor:pointer; }
+.message { margin-top:20px; font-size:18px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Tebak Angka 1-100</h2>
+  <input type="number" id="guess" placeholder="Tebak angka...">
+  <button id="submit">Kirim</button>
+  <div class="message" id="message">Soal akan muncul di sini</div>
+  <button id="restart" style="margin-top:10px; display:none;" onclick="restartGame()">Main Lagi</button>
+  <button id="back" onclick="window.location='index.html'" style="margin-top:15px; padding:8px 12px; border:none; border-radius:8px; background:#06b6d4; color:#0f172a; font-weight:bold; cursor:pointer;">Back to Game Launcher</button>
+</div>
+
+<script>
+let target = Math.floor(Math.random()*100)+1;
+let attempts = 0;
+
+const guessInput = document.getElementById('guess');
+const submitBtn = document.getElementById('submit');
+const msgDiv = document.getElementById('message');
+const restartBtn = document.getElementById('restart');
+
+submitBtn.onclick = checkGuess;
+
+function checkGuess(){
+  const g = Number(guessInput.value);
+  if(!g){ msgDiv.textContent="⚠️ Masukkan angka!"; return; }
+  attempts++;
+  if(g===target){
+    msgDiv.textContent = `🎉 Benar! Angka: ${target}, Tebakan: ${attempts}`;
+    submitBtn.disabled = true;
+    restartBtn.style.display = "inline-block";
+  } else if(g<target){
+    msgDiv.textContent = "⬆️ Terlalu kecil!";
+  } else {
+    msgDiv.textContent = "⬇️ Terlalu besar!";
+  }
+  guessInput.value='';
+}
+
+function restartGame(){
+  target = Math.floor(Math.random()*100)+1;
+  attempts = 0;
+  msgDiv.textContent="Soal akan muncul di sini";
+  submitBtn.disabled=false;
+  restartBtn.style.display="none";
+}
+</script>
+</body>
+</html>
